@@ -1,4 +1,5 @@
 data/runtime/*
-install/install.lock
+install/
+install/*
 data/conf/db.php
 _*
