@@ -1,0 +1,70 @@
+<admintpl file="header"/>
+<?php 
+    echo APP_DEBUG
+?>
+<body class="J_scroll_fixed">
+<div class="wrap J_check_wrap">
+  <ul class="nav nav-tabs">
+     <li ><a href="{:U('product/index')}">所有产品</a></li>
+     <li class="active"><a href="#" target="_blank">编辑产品</a></li>
+  </ul>
+  <div class="common-form">
+			<form method="post" class="form-horizontal J_ajaxForm" action="{:U('product/edit_post')}">
+				<fieldset>
+					<div class="control-group">
+						<label class="control-label">产品名称:</label>
+						<div class="controls">
+							<input type="text" class="input" name="name" value="{$name}"><span class="must_red">*</span>
+							<input type="hidden" class="input" name="id" value="{$id}">
+						</div>
+					</div>
+                    <div class="control-group">
+						<label class="control-label">产品货号:</label>
+						<div class="controls">
+							<input type="text" class="input" name="sku" value="{$sku}" placeholder="0.00">
+						</div>
+					</div>
+                    <div class="control-group">
+						<label class="control-label">产品简介:</label>
+						<div class="controls">
+							<textarea name="summary" rows="3" cols="100" class="span5">{$summary}</textarea>
+						</div>
+					</div>
+                    <div class="control-group">
+						<label class="control-label">产品描述:</label>
+						<div class="controls">
+							<textarea name="description" rows="5" cols="57" class="span5">{$description}</textarea>
+						</div>
+					</div>
+                    <div class="control-group">
+						<label class="control-label">产品价格:</label>
+						<div class="controls">
+							<input type="text" class="input" name="price" value="{$name}" placeholder="0.00">
+						</div>
+					</div>
+                    <div class="control-group">
+						<label class="control-label">产品库存:</label>
+						<div class="controls">
+							<input type="text" class="input" name="limit" value="{$name}" placeholder="999">
+						</div>
+					</div>
+                    <div class="control-group">
+						<label class="control-label">产品描述:</label>
+						<div class="controls">
+							<select name="status">
+                                <option value="1">上架</option>
+                                <option value="0">下架</option>
+                            </select>
+						</div>
+					</div>
+				</fieldset>
+				<div class="form-actions">
+					<button type="submit" class="btn btn-primary btn_submit J_ajax_submit_btn">添加</button>
+					<a class="btn" href="__URL__">返回</a>
+				</div>
+			</form>
+  </div>
+</div>
+<script src="__ROOT__/statics/js/common.js"></script>
+</body>
+</html>
