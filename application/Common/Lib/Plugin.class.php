@@ -112,8 +112,8 @@ abstract class Plugin{
         	
         	$theme=empty($theme)?"":$theme.$depr;
         	
-            $templateFile = "./".$this->tmpl_root.$templateFile.C('TMPL_TEMPLATE_SUFFIX');
-            if(!is_file($templateFile)){
+            $templateFile = sp_add_template_file_suffix("./".$this->tmpl_root.$templateFile);
+            if(!file_exists_case($templateFile)){
                 throw new \Exception("模板不存在:$templateFile");
             }
         }

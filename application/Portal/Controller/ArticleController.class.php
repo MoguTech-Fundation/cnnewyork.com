@@ -16,6 +16,15 @@ class ArticleController extends HomeBaseController {
     public function index() {
     	$id=intval($_GET['id']);
     	$article=sp_sql_post($id,'');
+    	if(empty($article)){
+    	    header('HTTP/1.1 404 Not Found');
+    	    header('Status:404 Not Found');
+    	    if(sp_template_file_exists(MODULE_NAME."/404")){
+    	        $this->display(":404");
+    	    }
+    	    
+    	    return ;
+    	}
     	$termid=$article['term_id'];
     	$term_obj= M("Terms");
     	$term=$term_obj->where("term_id='$termid'")->find();

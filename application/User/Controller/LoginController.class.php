@@ -7,7 +7,11 @@ use Common\Controller\HomeBaseController;
 class LoginController extends HomeBaseController {
 	
 	function index(){
-		$this->display(":login");
+	    if(sp_is_user_login()){ //已经登录时直接跳到首页
+	        redirect(__ROOT__."/");
+	    }else{
+	        $this->display(":login");
+	    }
 	}
 	
 	function active(){

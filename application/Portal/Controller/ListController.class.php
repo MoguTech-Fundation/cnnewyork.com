@@ -16,6 +16,17 @@ class ListController extends HomeBaseController {
 	//文章内页
 	public function index() {
 		$term=sp_get_term($_GET['id']);
+		
+		if(empty($term)){
+		    header('HTTP/1.1 404 Not Found');
+		    header('Status:404 Not Found');
+		    if(sp_template_file_exists(MODULE_NAME."/404")){
+		        $this->display(":404");
+		    }
+		    	
+		    return ;
+		}
+		
 		$tplname=$term["list_tpl"];
     	$tplname=sp_get_apphome_tpl($tplname, "list");
     	$this->assign($term);

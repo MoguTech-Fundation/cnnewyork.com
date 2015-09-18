@@ -95,8 +95,8 @@ class PluginController extends Controller{
 		
 		$v_layer=C("DEFAULT_V_LAYER");
 		
-		$file="./plugins/$plugin/$v_layer".$theme.$template.C('TMPL_TEMPLATE_SUFFIX');
-		if(!is_file($file)) E(L('_TEMPLATE_NOT_EXIST_').':'.$file);
+		$file = sp_add_template_file_suffix("./plugins/$plugin/$v_layer".$theme.$template);
+		if(!file_exists_case($file)) E(L('_TEMPLATE_NOT_EXIST_').':'.$file);
 		return $file;
 
 	}

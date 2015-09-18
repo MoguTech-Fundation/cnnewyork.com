@@ -454,17 +454,18 @@ function sp_get_menu($id="main",$effected_id="mainmenu",$filetpl="<span class='f
 
 function _sp_get_menu_datas($id){
 	$nav_obj= M("Nav");
+	$id= intval($id);
+	$id = empty($id)?"main":$id;
 	if($id=="main"){
 		$navcat_obj= M("NavCat");
 		$main=$navcat_obj->where("active=1")->find();
 		$id=$main['navcid'];
 	}
 	
-	$id= intval($id);
-	
 	if(empty($id)){
 		return array();
 	}
+	
 	$navs= $nav_obj->where("cid=$id and status=1")->order(array("listorder" => "ASC"))->select();
 	foreach ($navs as $key=>$nav){
 		$href=htmlspecialchars_decode($nav['href']);
@@ -574,10 +575,10 @@ function sp_get_apphome_tpl($tplname,$default_tplname,$default_theme=""){
 	}
 	$theme=empty($default_theme)?$theme:$default_theme;
 	$themepath=C("SP_TMPL_PATH").$theme."/".MODULE_NAME."/";
-	$tplpath=$themepath.$tplname.C("TMPL_TEMPLATE_SUFFIX");
-	$defaultpl=$themepath.$default_tplname.C("TMPL_TEMPLATE_SUFFIX");
-	if(file_exists($tplpath)){
-	}else if(file_exists($defaultpl)){
+	$tplpath = sp_add_template_file_suffix($themepath.$tplname);
+	$defaultpl = sp_add_template_file_suffix($themepath.$default_tplname);
+	if(file_exists_case($tplpath)){
+	}else if(file_exists_case($defaultpl)){
 		$tplname=$default_tplname;
 	}else{
 		$tplname="404";
@@ -628,6 +629,9 @@ function sp_send_email($address,$subject,$message){
 	$mail->Subject=$subject;
 	// 设置SMTP服务器。
 	$mail->Host=C('SP_MAIL_SMTP');
+	// 设置SMTP服务器端口。
+	$port=C('SP_MAIL_SMTP_PORT');
+	$mail->Port=empty($port)?"25":$port;
 	// 设置为"需要验证"
 	$mail->SMTPAuth=true;
 	// 设置用户名和密码。
@@ -1320,8 +1324,8 @@ function sp_get_hooks($refresh=false){
 	$tpls=sp_scan_dir("tpl/*",GLOB_ONLYDIR);
 	
 	foreach ($tpls as $tpl){
-		$hooks_file="tpl/$tpl/hooks".C("TMPL_TEMPLATE_SUFFIX");
-		if(is_file($hooks_file)){
+		$hooks_file= sp_add_template_file_suffix("tpl/$tpl/hooks");
+		if(file_exists_case($hooks_file)){
 			$hooks=file_get_contents($hooks_file);
 			$hooks=preg_replace("/[^0-9A-Za-z_-]/u", ",", $hooks);
 			$hooks=explode(",", $hooks);
@@ -1481,4 +1485,115 @@ function sp_alpha_id($in, $to_num = false, $pad_up = 4, $passKey = null){
 function sp_check_verify_code(){
 	$verify = new \Think\Verify();
 	return $verify->check($_REQUEST['verify'], "");
+}
+
+/**
+ * 执行SQL文件  sae 环境下file_get_contents() 函数好像有间歇性bug。
+ * @param string $sql_path sql文件路径
+ * @author 5iymt <1145769693@qq.com>
+ */
+function sp_execute_sql_file($sql_path) {
+    	
+	$context = stream_context_create ( array (
+			'http' => array (
+					'timeout' => 30 
+			) 
+	) ) ;// 超时时间，单位为秒
+	
+	// 读取SQL文件
+	$sql = file_get_contents ( $sql_path, 0, $context );
+	$sql = str_replace ( "\r", "\n", $sql );
+	$sql = explode ( ";\n", $sql );
+	
+	// 替换表前缀
+	$orginal = 'sp_';
+	$prefix = C ( 'DB_PREFIX' );
+	$sql = str_replace ( "{$orginal}", "{$prefix}", $sql );
+	
+	// 开始安装
+	foreach ( $sql as $value ) {
+		$value = trim ( $value );
+		if (empty ( $value )){
+			continue;
+		}
+		$res = M ()->execute ( $value );
+	}
+}
+
+/**
+ * 插件R方法扩展 建立多插件之间的互相调用。提供无限可能
+ * 使用方式 get_plugns_return('Chat://Index/index',array())
+ * @param string $url 调用地址
+ * @param array $params 调用参数
+ * @author 5iymt <1145769693@qq.com>
+ */
+function sp_get_plugins_return($url, $params = array()){
+	$url        = parse_url($url);
+	$case       = C('URL_CASE_INSENSITIVE');
+	$plugin     = $case ? parse_name($url['scheme']) : $url['scheme'];
+	$controller = $case ? parse_name($url['host']) : $url['host'];
+	$action     = trim($case ? strtolower($url['path']) : $url['path'], '/');
+	
+	/* 解析URL带的参数 */
+	if(isset($url['query'])){
+		parse_str($url['query'], $query);
+		$params = array_merge($query, $params);
+	}
+	return R("plugins://{$plugin}/{$controller}/{$action}", $params);
+}
+
+/**
+ * 给没有后缀的模板文件，添加后缀名
+ * @param string $filename_nosuffix
+ */
+function sp_add_template_file_suffix($filename_nosuffix){
+    
+    
+    
+    if(file_exists_case($filename_nosuffix.C('TMPL_TEMPLATE_SUFFIX'))){
+        $filename_nosuffix = $filename_nosuffix.C('TMPL_TEMPLATE_SUFFIX');
+    }else if(file_exists_case($filename_nosuffix.".php")){
+        $filename_nosuffix = $filename_nosuffix.".php";
+    }else{
+        $filename_nosuffix = $filename_nosuffix.C('TMPL_TEMPLATE_SUFFIX');
+    }
+    
+    return $filename_nosuffix;
+}
+
+/**
+ * 获取当前主题名
+ * @param string $default_theme 指定的默认模板名
+ * @return string
+ */
+function sp_get_current_theme($default_theme=''){
+    $theme      =    C('SP_DEFAULT_THEME');
+    if(C('TMPL_DETECT_THEME')){// 自动侦测模板主题
+        $t = C('VAR_TEMPLATE');
+        if (isset($_GET[$t])){
+            $theme = $_GET[$t];
+        }elseif(cookie('think_template')){
+            $theme = cookie('think_template');
+        }
+    }
+    $theme=empty($default_theme)?$theme:$default_theme;
+    
+    return $theme;
+}
+
+/**
+ * 判断模板文件是否存在，区分大小写
+ * @param string $file 模板文件路径，相对于当前模板根目录，不带模板后缀名
+ */
+function sp_template_file_exists($file){
+    $theme= sp_get_current_theme();
+    $filepath=C("SP_TMPL_PATH").$theme."/".$file;
+    $tplpath = sp_add_template_file_suffix($filepath);
+    
+    if(file_exists_case($tplpath)){
+        return true;
+    }else{
+        return false;
+    }
+    
 }

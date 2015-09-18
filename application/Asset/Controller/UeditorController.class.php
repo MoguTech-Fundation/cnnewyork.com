@@ -411,7 +411,7 @@ class UeditorController extends Controller {
 		//开始上传
 		if ($info) {
 			//上传成功
-			$title = $oriName = $info['upfile']['name'];
+			$title = $oriName = $_FILES['upfile']['name'];
 			$size=$info['upfile']['size'];
 		
 			$state = 'SUCCESS';

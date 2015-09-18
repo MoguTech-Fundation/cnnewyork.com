@@ -45,12 +45,12 @@ class HomeBaseController extends AppframeController {
 	}
 	
 	protected function  check_user(){
-		
-		if($_SESSION["user"]['user_status']==2){
+	    $user_status=M('Users')->where(array("id"=>sp_get_current_userid()))->getField("user_status");
+		if($user_status==2){
 			$this->error('您还没有激活账号，请激活后再使用！',U("user/login/active"));
 		}
 		
-		if($_SESSION["user"]['user_status']==0){
+		if($user_status==0){
 			$this->error('此账号已经被禁止使用，请联系管理员！',__ROOT__."/");
 		}
 	}
@@ -83,7 +83,7 @@ class HomeBaseController extends AppframeController {
 		$send_result=sp_send_email($_SESSION['user']['user_email'], $title, $content);
 	
 		if($send_result['error']){
-			$this->error('激活邮件发送失败！');
+			$this->error('激活邮件发送失败，请尝试登录后，手动发送激活邮件！');
 		}
 	}
 	
@@ -101,8 +101,19 @@ class HomeBaseController extends AppframeController {
 		parent::display($this->parseTemplate($templateFile), $charset, $contentType);
 	}
 	
+	/**
+	 * 获取输出页面内容
+	 * 调用内置的模板引擎fetch方法，
+	 * @access protected
+	 * @param string $templateFile 指定要调用的模板文件
+	 * 默认为空 由系统自动定位模板文件
+	 * @param string $content 模板输出内容
+	 * @param string $prefix 模板缓存前缀*
+	 * @return string
+	 */
 	public function fetch($templateFile='',$content='',$prefix=''){
-		return parent::fetch($this->parseTemplate($templateFile),$content,$prefix);
+	    $templateFile = empty($content)?$this->parseTemplate($templateFile):'';
+		return parent::fetch($templateFile,$content,$prefix);
 	}
 	
 	/**
@@ -114,6 +125,7 @@ class HomeBaseController extends AppframeController {
 	public function parseTemplate($template='') {
 		
 		$tmpl_path=C("SP_TMPL_PATH");
+		define("SP_TMPL_PATH", $tmpl_path);
 		// 获取当前主题名称
 		$theme      =    C('SP_DEFAULT_THEME');
 		if(C('TMPL_DETECT_THEME')) {// 自动侦测模板主题
@@ -140,6 +152,8 @@ class HomeBaseController extends AppframeController {
 		
 		
 		
+		
+		
 		C('SP_DEFAULT_THEME',$theme);
 		
 		$current_tmpl_path=$tmpl_path.$theme."/";
@@ -150,6 +164,8 @@ class HomeBaseController extends AppframeController {
 		
 		C('SP_VIEW_PATH',$tmpl_path);
 		C('DEFAULT_THEME',$theme);
+		
+		define("SP_CURRENT_THEME", $theme);
 		
 		if(is_file($template)) {
 			return $template;
@@ -172,8 +188,9 @@ class HomeBaseController extends AppframeController {
 			$template = "/".CONTROLLER_NAME . $depr . $template;
 		}
 		
-		$file=$current_tmpl_path.$module.$template.C('TMPL_TEMPLATE_SUFFIX');
-		if(!is_file($file)) E(L('_TEMPLATE_NOT_EXIST_').':'.$file);
+		$file = sp_add_template_file_suffix($current_tmpl_path.$module.$template);
+		$file= str_replace("//",'/',$file);
+		if(!file_exists_case($file)) E(L('_TEMPLATE_NOT_EXIST_').':'.$file);
 		return $file;
 	}
 	
@@ -187,15 +204,15 @@ class HomeBaseController extends AppframeController {
 		}
 		$tpl_path=C("SP_TMPL_PATH").$theme."/";
 		$defaultjump=THINK_PATH.'Tpl/dispatch_jump.tpl';
-		$action_success=$tpl_path.C("SP_TMPL_ACTION_SUCCESS").C("TMPL_TEMPLATE_SUFFIX");
-		$action_error=$tpl_path.C("SP_TMPL_ACTION_ERROR").C("TMPL_TEMPLATE_SUFFIX");
-		if(file_exists($action_success)){
+		$action_success = sp_add_template_file_suffix($tpl_path.C("SP_TMPL_ACTION_SUCCESS"));
+		$action_error = sp_add_template_file_suffix($tpl_path.C("SP_TMPL_ACTION_ERROR"));
+		if(file_exists_case($action_success)){
 			C("TMPL_ACTION_SUCCESS",$action_success);
 		}else{
 			C("TMPL_ACTION_SUCCESS",$defaultjump);
 		}
 		
-		if(file_exists($action_error)){
+		if(file_exists_case($action_error)){
 			C("TMPL_ACTION_ERROR",$action_error);
 		}else{
 			C("TMPL_ACTION_ERROR",$defaultjump);

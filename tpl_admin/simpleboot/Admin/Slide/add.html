@@ -119,6 +119,8 @@ $(function () {
 	                }
 	            });
 	        }
+	        
+	        var formloading=false;
 	        //表单验证开始
 	        form.validate({
 				//是否在获取焦点时验证
@@ -159,13 +161,15 @@ $(function () {
 	            onfocusout: false,
 	            //验证通过，提交表单
 	            submitHandler: function (forms) {
+	            	if(formloading) return;
 	                $(forms).ajaxSubmit({
 	                    url: form.attr('action'), //按钮上是否自定义提交地址(多按钮情况)
 	                    dataType: 'json',
 	                    beforeSubmit: function (arr, $form, options) {
-	                        
+	                    	formloading=true;
 	                    },
 	                    success: function (data, statusText, xhr, $form) {
+	                    	formloading=false;
 	                        if(data.status){
 								setCookie("refersh_time",1);
 								//添加成功

@@ -25,6 +25,7 @@ class MailerController extends AdminbaseController {
     	$configs['SP_MAIL_ADDRESS'] = $_POST['address'];
     	$configs['SP_MAIL_SENDER'] = $_POST['sender'];
     	$configs['SP_MAIL_SMTP'] = $_POST['smtp'];
+    	$configs['SP_MAIL_SMTP_PORT'] = $_POST['smtp_port'];
     	$configs['SP_MAIL_LOGINNAME'] = $_POST['loginname'];
     	$configs['SP_MAIL_PASSWORD'] = $_POST['password'];
     	$rst=sp_set_dynamic_config($configs);

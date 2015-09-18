@@ -176,7 +176,7 @@ function openapp(url, appid, appname, selectObj) {
     $("#task-content-inner .current").removeClass("current");
     if ($app.length == 0) {
         var task = $(task_item_tpl).attr("app-id", appid).attr("app-url",url).attr("app-name",appname).addClass("current");
-        task.find(".macro-tabs-item-text").html(appname);
+        task.find(".macro-tabs-item-text").html(appname).attr("title",appname);
         $task_content_inner.append(task);
         $(".appiframe").hide();
         $loading.show();

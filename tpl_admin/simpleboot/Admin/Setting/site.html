@@ -1,4 +1,5 @@
 <admintpl file="header" />
+</head>
 <body class="J_scroll_fixed">
 	<div class="wrap J_check_wrap">
 
@@ -131,7 +132,7 @@
 									<label class="control-label">url模式：</label>
 									<div class="controls">
 										<php>$urlmodes=array( "0"=>"普通模式", "1"=>"PATHINFO模式", "2"=>"REWRITE模式" );</php>
-										<select name="options[urlmode]" class="normal_select">
+										<select name="options[urlmode]" class="normal_select" id="urlmode-select">
 											<foreach name="urlmodes" item="vo">
 											<php>$urlmode_selected=$key==$urlmode?"selected":"";</php>
 											<option value="{$key}" {$urlmode_selected}>{$vo}</option>
@@ -200,6 +201,17 @@
 	<script type="text/javascript" src="__ROOT__/statics/js/common.js"></script>
 	<script>
 		/////---------------------
+		$(function(){
+			$("#urlmode-select").change(function(){
+				if($(this).val()==1){
+					alert("更改后，若发现前台链接不能正常访问，可能是您的服务器不支持PATHINFO，请先修改data/conf/config.php文件的URL_MODEL为0保证网站正常运行,在配置服务器PATHINFO功能后再更新为PATHINFO模式！");
+				}
+				
+				if($(this).val()==2){
+					alert("更改后，若发现前台链接不能正常访问，可能是您的服务器不支持REWRITE，请先修改data/conf/config.php文件的URL_MODEL为0保证网站正常运行，在开启服务器REWRITE功能后再更新为REWRITE模式！");
+				}
+			});
+		});
 		Wind.use('validate', 'ajaxForm', 'artDialog', function() {
 			//javascript
 			var form = $('form.J_ajaxForms');

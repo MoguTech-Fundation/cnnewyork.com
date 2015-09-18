@@ -76,6 +76,7 @@ class AdminTermController extends AdminbaseController {
 		if (IS_POST) {
 			if ($this->terms_model->create()) {
 				if ($this->terms_model->add()!==false) {
+				    F('all_terms',null);
 					$this->success("添加成功！",U("AdminTerm/index"));
 				} else {
 					$this->error("添加失败！");
@@ -115,6 +116,7 @@ class AdminTermController extends AdminbaseController {
 		if (IS_POST) {
 			if ($this->terms_model->create()) {
 				if ($this->terms_model->save()!==false) {
+				    F('all_terms',null);
 					$this->success("修改成功！");
 				} else {
 					$this->error("修改失败！");
