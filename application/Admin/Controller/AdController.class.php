@@ -30,7 +30,6 @@ class AdController extends AdminbaseController{
 			} else {
 				$this->error($this->ad_model->getError());
 			}
-		
 		}
 	}
 	

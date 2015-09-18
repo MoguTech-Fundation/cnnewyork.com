@@ -19,7 +19,7 @@ if (ini_get('magic_quotes_gpc')) {
 	$_POST = stripslashesRecursive($_POST);
 }
 //开启调试模式
-define("APP_DEBUG", true);
+define('APP_DEBUG', false);
 //网站当前路径
 define('SITE_PATH', dirname(__FILE__)."/");
 //项目路径，不可更改
@@ -35,7 +35,7 @@ define("RUNTIME_PATH", SITE_PATH . "/data/runtime/");
 //静态缓存目录
 define("HTML_PATH", SITE_PATH . "/data/runtime/Html/");
 //版本号
-define("SIMPLEWIND_CMF_VERSION", 'X1.6.1');
+define("SIMPLEWIND_CMF_VERSION", 'X1.6.0');
 
 define("THINKCMF_CORE_TAGLIBS", 'cx,Common\Lib\Taglib\TagLibSpadmin,Common\Lib\Taglib\TagLibHome');
 
@@ -56,4 +56,3 @@ if(file_exists(UC_CLIENT_ROOT."config.inc.php")){
 
 //载入框架核心文件
 require SPAPP_PATH.'Core/ThinkPHP.php';
-

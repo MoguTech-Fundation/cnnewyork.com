@@ -87,40 +87,43 @@ $home_slides=empty($home_slides)?$default_home_slides:$home_slides;
               <p>如果您想要免去繁琐的手续，或要获取更廉宜的价格，都可以通过我们的平台渠道，获得各类鞋子的信息。</p>
 		</div>
 	</div>
-	<!-- 最新资讯
+	<!-- 最新上架 -->
+    <?php 
+        $product_model = D('product');
+        $products = $product_model->limit(4)->select();
+    ?> 
+    <notempty name="products">
 	<div>
-		<h1 class="text-center">最新资讯</h1>
-		<h3 class="text-center">Last News</h3>
+		<h1 class="text-center">最新上架</h1>
+		<h3 class="text-center">New Product</h3>
 	</div>
+    </notempty>
+    <!--
 	<php>
 		$lastnews=sp_sql_posts("cid:$portal_index_lastnews;field:post_title,post_excerpt,tid,smeta;order:listorder asc;limit:4;"); 
 	</php>
+    -->
 	<div class="row">
-		<foreach name="lastnews" item="vo">
-		<php>$smeta=json_decode($vo['smeta'],true);</php>
+		<foreach name="products" item="vo">
 		<div class="span3">
 			<div class="tc-gridbox">
 				<div class="header">
 					<div class="item-image">
-						<a href="{:leuu('article/index',array('id'=>$vo['tid']))}">
-							<if condition="empty($smeta['thumb'])"> 
-								<img src="__TMPL__Public/images/default_tupian1.png" class="img-responsive" alt="{$vo.post_title}"/>
-							<else /> 
-								<img src="{:sp_get_asset_upload_path($smeta['thumb'])}" class="img-responsive img-thumbnail" alt="{$vo.post_title}" />
-							</if>
+						<a href="{:leuu('product/index',array('id'=>$vo['tid']))}">
+								<img src="__UPLOAD__product/{$vo.id}.jpg" class="img-responsive img-thumbnail" alt="{$vo.post_title}" onerror="this.src='__TMPL__Public/images/default_tupian1.png'"/>
 						</a>
 					</div>
-					<h3><a href="{:leuu('article/index',array('id'=>$vo['tid']))}">{$vo.post_title}</a></h3>
+					<h3><a href="{:leuu('product/index',array('id'=>$vo['id']))}">{$vo.name}</a></h3>
 					<hr>
 				</div>
 				<div class="body">
-					<p><a href="{:leuu('article/index',array('id'=>$vo['tid']))}">{:msubstr($vo['post_excerpt'],0,32)}</a></p>
+					<p><a href="{:leuu('product/index',array('id'=>$vo['id']))}">{$vo.description}</a></p>
 				</div>
 			</div>
 		</div>
 		</foreach>
 	</div>
-    -- /最新资讯 -->
+    <!-- /最新资讯 -->
 <tc_include file="Public:footer"/>
 </div>
 

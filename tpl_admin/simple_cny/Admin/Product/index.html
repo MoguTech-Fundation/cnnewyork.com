@@ -1,63 +1,49 @@
 <admintpl file="header"/>
+<?php 
+    echo APP_DEBUG
+?>
 <body class="J_scroll_fixed">
 <div class="wrap J_check_wrap">
   <ul class="nav nav-tabs">
-     <li class="active"><a href="{:U('plugin/index')}">所有产品</a></li>
-     <li><a href="#" target="_blank">添加编辑产品</a></li>
+     <li class="active"><a href="{:U('product/index')}">所有产品</a></li>
+     <li><a href="{:U('product/add')}">添加产品</a></li>
   </ul>
   <div class="common-form">
     <form method="post" class="J_ajaxForm" action="#">
       <div class="table_list">
-      	<php>
-        		$status=array("1"=>"启用","0"=>"禁用","3"=>'未安装');
-        </php>
+      	<?php
+            $status=array("1"=>"上架","0"=>"下架");
+        ?>
 	    <table width="100%" class="table table-hover table-bordered">
 	        <thead>
 	          <tr>
-                <th>编号</th>
-	            <th>名称</th>
-                <th>货号</th>
-                <th>产品编号</th>
-	            <th>价格</th>
-	            <th>库存</th>
+                <th width="30" title="系统编号">编号</th>
+                <th width="120">缩微图</th>
+	            <th width="120">名称</th>
+                <th width="120" title="来源货号, 比如 tb-1234 &#xA;表示来自淘宝的产品，货号为1234">货号</th>
+                <th>产品简介</th>
+	            <th width="30">价格</th>
+	            <th width="30">库存</th>
 	            <th width="45">状态</th>
 	            <th width="150">操作</th>
 	          </tr>
 	        </thead>
 	        <tbody>
-	        	<foreach name="plugins" item="vo">
+	        	<foreach name="rows" item="vo">
 	        	<tr>
-		            <td>{$vo.title}</td>
+		            <td style="text-align:right">{$vo.id}</td>
+                    <td><img src="__UPLOAD__product/{$vo.id}.jpg" width="100" onerror="this.src='__TMPL__Public/images/default_tupian1.png'"></td>
+                    <td>{$vo.sku}</td>
 		            <td>{$vo.name}</td>
-		            <td>{$vo.hooks}</td>
 		            <td>{$vo.description}</td>
-		            <td>{$vo.author}</td>
+		            <td style="text-align:right">{$vo.price}</td>
+                    <td style="text-align:right">{$vo.limit}</td>
 		            <td>{$status[$vo['status']]}</td>
 		            <td>
-		            <if condition="$vo['status']==3">
-		            	<a href="{:U('plugin/install',array('name'=>$vo['name']))}" class="J_ajax_dialog_btn"  data-msg="确定安装该插件吗？">安装</a>
-		            <else/>
-		            	<php>$config=json_decode($vo['config'],true);</php>
-	            		<if condition="!empty($config)">
-	            			<a href="{:U('plugin/setting',array('id'=>$vo['id']))}">设置</a>|
-	            		<else/>
-	            			<a href="javascript:;" style="color:#ccc;">设置</a>|
-	            		</if>
-	            		
-	            		<if condition="!empty($vo['has_admin'])">
-	            			<a href="javascript:parent.openapp('{:sp_plugin_url($vo['name'].'://AdminIndex/index')}','plugin_{$vo.name}','{$vo.title}')">管理</a>|
-	            		<else/>
-	            			<a href="javascript:;" style="color:#ccc;">管理</a>|
-	            		</if>
-	            		
-	            		<a href="{:U('plugin/update',array('name'=>$vo['name']))}" class="J_ajax_dialog_btn"  data-msg="确定更新该插件吗？">更新</a>|
-		            	<if condition="$vo['status']==0">
-		            		<a href="{:U('plugin/toggle',array('id'=>$vo['id'],'enable'=>1))}" class="J_ajax_dialog_btn"  data-msg="确定启用该插件吗？">启用</a>|
-		            	<else/>
-		            		<a href="{:U('plugin/toggle',array('id'=>$vo['id'],'disable'=>1))}" class="J_ajax_dialog_btn"  data-msg="确定禁用该插件吗？">禁用</a>|
-		            	</if>
-	            		<a href="{:U('plugin/uninstall',array('id'=>$vo['id']))}" class="J_ajax_dialog_btn"  data-msg="确定卸载该插件吗？">卸载</a>
-		            </if>
+                    <a href="{:U('product/disable',array('id'=>$vo['id']))}">下架</a> |
+                    <a href="{:U('product/delete',array('id'=>$vo['id']))}" class="J_ajax_dialog_btn"  data-msg="确定删除该产品吗？">删除</a> |
+                    <a href="{:U('product/edit',array('id'=>$vo['id']))}">详情</a> |
+                    <a href="{:U('product/edit',array('id'=>$vo['id']))}">编辑</a>
 		            	
 			        </td>
 	          	</tr>
