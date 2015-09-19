@@ -1,7 +1,4 @@
 <admintpl file="header"/>
-<?php 
-    echo APP_DEBUG
-?>
 <body class="J_scroll_fixed">
 <div class="wrap J_check_wrap">
   <ul class="nav nav-tabs">
@@ -12,7 +9,7 @@
     <form method="post" class="J_ajaxForm" action="#">
       <div class="table_list">
       	<?php
-            $status=array("1"=>"上架","0"=>"下架");
+            $status=array("1"=>"显示","0"=>"隐藏");
         ?>
 	    <table width="100%" class="table table-hover table-bordered">
 	        <thead>
@@ -32,15 +29,20 @@
 	        	<foreach name="rows" item="vo">
 	        	<tr>
 		            <td style="text-align:right">{$vo.id}</td>
-                    <td><img src="__UPLOAD__product/{$vo.id}.jpg" width="100" onerror="this.src='__TMPL__Public/images/default_tupian1.png'"></td>
+                    <td><img src="__UPLOAD__product/{$vo.id}.jpg" width="100" onerror="this.onerror=null;this.src='__STATICS__/images/default_tupian1.png'"></td>
+		            <td>{$vo.name} </td>
                     <td>{$vo.sku}</td>
-		            <td>{$vo.name}</td>
 		            <td>{$vo.description}</td>
 		            <td style="text-align:right">{$vo.price}</td>
                     <td style="text-align:right">{$vo.limit}</td>
-		            <td>{$status[$vo['status']]}</td>
 		            <td>
-                    <a href="{:U('product/disable',array('id'=>$vo['id']))}">下架</a> |
+                        <if condition="$vo['visibility'] neq 0">
+                            <a href="{:U('product/update',array('id'=>$vo['id'], 'field'=>'visibility', 'value'=>'0'))}">显示</a>
+                         <else /><a href="{:U('product/update',array('id'=>$vo['id'], 'field'=>'visibility', 'value'=>'1'))}">隐藏</a>
+                        </if>
+                    </td>
+		            <td>
+                    
                     <a href="{:U('product/delete',array('id'=>$vo['id']))}" class="J_ajax_dialog_btn"  data-msg="确定删除该产品吗？">删除</a> |
                     <a href="{:U('product/edit',array('id'=>$vo['id']))}">详情</a> |
                     <a href="{:U('product/edit',array('id'=>$vo['id']))}">编辑</a>

@@ -26,7 +26,7 @@ class ProductController extends AdminbaseController {
 		if(IS_POST){
 			if ($this->product_model->create()){
 				if ($this->product_model->add()!==false) {
-					$this->success("添加成功！", U("product/index"));
+					$this->success("添加成功！", U("product/index"), 1);
 				} else {
 					$this->error("添加失败！");
 				}
@@ -41,6 +41,27 @@ class ProductController extends AdminbaseController {
 			$this->success("删除成功！");
 		} else {
 			$this->error("删除失败！");
+		}
+	}
+	public function update() {
+		if (isset($_GET['id'])) {
+			$id = intval($_GET['id']);
+			switch ($_GET['field']) {
+				case 'visibility':
+					if ($_GET['value']) {
+						$data['visibility'] = 1;
+					} else {
+						$data['visibility'] = 0;
+					}
+					break;
+				default: 
+					// do nothing...
+			}
+			if ($this->product_model->where("id =$id")->save($data)!==false) {
+				$this->redirect(U("product/index"), 0);
+			} else {
+				$this->error("更新失败！");
+			}
 		}
 	}
 	public function add() {
