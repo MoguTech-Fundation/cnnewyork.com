@@ -1,10 +1,10 @@
 <?php
 // +----------------------------------------------------------------------
-// | ThinkCMF [ WE CAN DO IT MORE SIMPLE ]
+// | TCShop [ A SIMPLE SHOP ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2013-2014 http://www.thinkcmf.com All rights reserved.
+// | Copyright (c) 2015 http://www.mogutech.com All rights reserved.
 // +----------------------------------------------------------------------
-// | Author: Dean <zxxjjforever@163.com>
+// | Author: Jay Lynn <lwjct@hotmail.com>
 // +----------------------------------------------------------------------
 return array (
 	'text' => array (// 在后台插件配置表单中的键名 ,会是config[text]

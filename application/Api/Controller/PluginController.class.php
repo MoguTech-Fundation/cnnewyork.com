@@ -1,12 +1,12 @@
 <?php
 // +---------------------------------------------------------------------
-// | ThinkCMF [ WE CAN DO IT MORE SIMPLE ]
+// | TCShop [ A SIMPLE SHOP ]
 // +---------------------------------------------------------------------
-// | Copyright (c) 2013-2014 http://www.thinkcmf.com All rights reserved.
+// | Copyright (c) 2015 http://www.mogutech.com All rights reserved.
 // +---------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +---------------------------------------------------------------------
-// | Author: Dean <zxxjjforever@163.com>
+// | Author: Jay Lynn <lwjct@hotmail.com>
 // +---------------------------------------------------------------------
 
 namespace Api\Controller;
