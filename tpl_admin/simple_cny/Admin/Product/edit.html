@@ -1,15 +1,13 @@
 <admintpl file="header"/>
-<?php 
-    echo APP_DEBUG
-?>
 <body class="J_scroll_fixed">
 <div class="wrap J_check_wrap">
   <ul class="nav nav-tabs">
-     <li ><a href="{:U('product/index')}">所有产品</a></li>
-     <li class="active"><a href="#" target="_blank">编辑产品</a></li>
+     <li><a href="{:U('product/index')}">所有产品</a></li>
+     <li><a href="{:U('product/add')}">添加产品</a></li>
+     <li class="active"><a href="#">编辑产品</a></li>
   </ul>
   <div class="common-form">
-			<form method="post" class="form-horizontal J_ajaxForm" action="{:U('product/edit_post')}">
+			<form method="post" class="form-horizontal J_ajaxForm" action="{:U('product/add_post')}">
 				<fieldset>
 					<div class="control-group">
 						<label class="control-label">产品名称:</label>
@@ -19,9 +17,21 @@
 						</div>
 					</div>
                     <div class="control-group">
+						<label class="control-label">尺码:</label>
+						<div class="controls">
+							<textarea name="color" placeholder="每行一个"></textarea>
+						</div>
+                    </div>
+                    <div class="control-group">
+						<label class="control-label">颜色:</label>
+						<div class="controls">
+							<textarea name="color" placeholder="每行一个"></textarea>
+						</div>
+                    </div>
+                    <div class="control-group">
 						<label class="control-label">产品货号:</label>
 						<div class="controls">
-							<input type="text" class="input" name="sku" value="{$sku}" placeholder="0.00">
+							<input type="text" class="input" name="sku" value="{$sku}" placeholder="hm-1234">
 						</div>
 					</div>
                     <div class="control-group">
@@ -49,15 +59,35 @@
 						</div>
 					</div>
                     <div class="control-group">
-						<label class="control-label">产品描述:</label>
+						<label class="control-label">产品显示:</label>
 						<div class="controls">
 							<select name="status">
-                                <option value="1">上架</option>
-                                <option value="0">下架</option>
+                                <option value="1">显示</option>
+                                <option value="0">隐藏</option>
                             </select>
 						</div>
 					</div>
 				</fieldset>
+                <!-- 暂时无法实现的自定义选项功能 
+                <fieldset>
+                    <legend>自定义选项:</legend>
+                    <div class="customizedOption well well-small">
+                        <div class="control-group">
+                            <label class="control-label">选项名称:</label>
+                            <div class="controls">
+                                <input type="text" class="input" name="paramname[]" value="" placeholder="比如: 尺码、颜色、型号等">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">选项值:</label>
+                            <div class="controls">
+                                <textarea name="paramvalue[]" placeholder="每行一个选项"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="btn btn-primary addCustomizedOption">+</a>
+                </fieldset>
+                -->
 				<div class="form-actions">
 					<button type="submit" class="btn btn-primary btn_submit J_ajax_submit_btn">添加</button>
 					<a class="btn" href="__URL__">返回</a>
@@ -66,5 +96,24 @@
   </div>
 </div>
 <script src="__ROOT__/statics/js/common.js"></script>
+<script>
+    $(".addCustomizedOption").bind("click", function(){
+        sHTML = '<div class="customizedOption well well-small">'
+                    +'<div class="control-group">'
+                    +'<label class="control-label">选项名称:</label>'
+                    +'       <div class="controls">'
+                    +'           <input type="text" class="input" name="paramName[]" value="" placeholder="比如: 尺码、颜色、型号等">'
+                    +'       </div>'
+                    +'   </div>'
+                    +'   <div class="control-group">'
+                    +'       <label class="control-label">选项值:</label>'
+                    +'       <div class="controls">'
+                    +'           <textarea name="paramValue[]" placeholder="每行一个选项"></textarea>'
+                    +'       </div>'
+                    +'   </div>'
+                    +'</div>';
+        $(this).before(sHTML);
+    })
+</script>
 </body>
 </html>

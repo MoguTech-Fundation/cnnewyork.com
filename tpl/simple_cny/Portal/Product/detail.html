@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+	<html>
+	<head>
+		<title>{$site_name} - {$site_seo_title} </title>
+		<meta name="keywords" content="{$site_seo_keywords}" />
+		<meta name="description" content="{$site_seo_description}">
+		<tc_include file="Public:head" />
+		<link href="__TMPL__Public/css/slippry/slippry.css" rel="stylesheet">
+		<style>
+			.caption-wraper{position: absolute;left:50%;bottom:2em;}
+			.caption-wraper .caption{
+			position: relative;left:-50%;
+			background-color: rgba(0, 0, 0, 0.54);
+			padding: 0.4em 1em;
+			color:#fff;
+			-webkit-border-radius: 1.2em;
+			-moz-border-radius: 1.2em;
+			-ms-border-radius: 1.2em;
+			-o-border-radius: 1.2em;
+			border-radius: 1.2em;
+			}
+			@media (max-width: 767px){
+				.sy-box{margin: 12px -20px 0 -20px;}
+				.caption-wraper{left:0;bottom: 0.4em;}
+				.caption-wraper .caption{
+				left: 0;
+				padding: 0.2em 0.4em;
+				font-size: 0.92em;
+				-webkit-border-radius: 0;
+				-moz-border-radius: 0;
+				-ms-border-radius: 0;
+				-o-border-radius: 0;
+				border-radius: 0;}
+			}
+		</style>
+	</head>
+<body class="body-white">
+<tc_include file="Public:nav" />
+
+<div class="container" style="padding-top: 40px;">
+    <div class="media">
+        <div class="span4 pull-left">
+            <span class="thumbnail"><img src="__UPLOAD__product/{$info.id}.jpg" onerror="this.src='__TMPL__Public/images/default_tupian1.png'"></span>
+        </div>
+        <div class="span7 pull-left">
+            <div style="text-align:left">
+                <h1 class="text-left">{$info.name}</h1>
+                <!--p class="text-left">简介: {$info.summary}</p-->
+           </div>
+           <form class="form-horizontal">
+                <div class="control-group">
+                    <label class="control-label" style="cursor:auto">售价: </label>
+                    <div class="controls"><span style="line-height:34px;font-size:30px">{$info.price}</span></div>
+                </div>
+               <div class="control-group">
+                    <label class="control-label">数量: </label>
+                    <div class="controls">
+                        <input type="number" name="quantity" value="1" class="span1">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <a href="javascript:void(0)" class="btn btn-primary">加入到购物车</a>
+                        <a href="{:U('checkout/step0', array('id'=>$info['id']))}" class="btn btn-danger">直接购买</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="span11 pull-left" style="margin-top: 20px;">
+            <?php if ($info['color'] || $info['size'] || $info['style']) {?>
+                <table class="table table-bordered">
+                    <notempty name="info.size">
+                        <tr>
+                            <th width="120">尺码</th>
+                            <td><ul class="sizelist nav nav-pills" style="margin-bottom:0px"><?php echo $info['size'];?></ul></td>
+                        </tr>
+                    </notempty>
+                    <notempty name="info.color">
+                        <tr>
+                            <th width="120">颜色</th>
+                            <td><ul class="colorlist nav nav-pills" style="margin-bottom:0px"><?php echo $info['color'] ?></ul></td>
+                        </tr>
+                    </notempty>
+                    <notempty name="info.style">
+                        <tr>
+                            <th width="120">款型</th>
+                            <td><span class="stylelist badge badge-info"><?php echo $info['style'];?></span></td>
+                        </tr>
+                    </notempty>
+                </table>
+            <?php } ?>
+        </div>
+        <div class="span11 pull-left">
+            <notempty name="info.description">
+            <h2 style="margin-bottom:0px;">产品详情描述</h2>
+            <p>Product Detail</p>
+            <div style="text-align:left">
+                {$info.description}
+            </div>
+            </notempty>
+            <?php 
+                $rows = D('product')->where(array('if_promote'=>'1'))->select();
+            ?>
+            <h2 style="margin-bottom:0px;">其他推荐产品</h2>
+            <p>Other Hot Sale Product</p>
+            <div style="text-align:left">
+                <ul class="thumbnails">
+                  <?php foreach($rows as $key => $val) { ?>
+                  <li>
+                    <div class="thumbnail">
+                       <a href="{:U('product/detail', array('id'=>$val['id']))}"><img data-src="holder.js/300x200" src="__UPLOAD__product/9/square(<?php echo $val['id']; ?>).jpg" alt=""></a>
+                    </div>
+                  </li>
+                  <?php } ?>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</div><!--/container-->
+<tc_include file="Public:footer"/>
+<tc_include file="Public:scripts"/>
+<script src="__TMPL__Public/js/slippry.min.js"></script>
+<script>
+// 处理款型列表
+var _stylelist = $(".stylelist").text().split("\n");
+$(".stylelist").html('<span class="badge badge-info">'+_stylelist[0]+'</span>');
+
+$(function() {
+	var demo1 = $("#homeslider").slippry({
+		transition: 'fade',
+		useCSS: true,
+		captions: false,
+		speed: 1000,
+		pause: 3000,
+		auto: true,
+		preload: 'visible'
+	});
+    
+    // 处理尺码列表
+    var sizelist = $.trim($(".sizelist").text()).split("\n");
+    var sHTML = '';
+    for (var i = 0; i < sizelist.length; i++) {
+        if (i == 0) { sHTML += '<li class="sizeitem active"><a href="javascript:void(0)" onclick="navSelect(this)">' + sizelist[i]+ '</a></li>'; }
+        else { sHTML += '<li class="sizeitem"><a href="javascript:void(0)" onclick="navSelect(this)">' + sizelist[i]+ '</a></li>'; }
+    }
+    $(".sizelist").html(sHTML);
+    
+    // 处理颜色列表
+    var colorlist = $.trim($(".colorlist").text()).split("\n");
+    var sHTML = '';
+    for (var i = 0; i < colorlist.length; i++) {
+        if (i == 0) { sHTML += '<li class="coloritem active"><a href="javascript:void(0)" onclick="navSelect(this)">' + colorlist[i]+ '</a></li>'; }
+        else { sHTML += '<li class="coloritem"><a href="javascript:void(0)" onclick="navSelect(this)">' + colorlist[i]+ '</a></li>'; }
+    }
+    $(".colorlist").html(sHTML);
+    
+
+});
+function navSelect(obj) {
+    var listContainer = $(obj).parent().parent();
+    var head = listContainer.children().index($(obj).parent());
+    window.console ? console.log(listContainer.attr("class")) : '';
+    window.console ? console.log(head) : '';
+    if (listContainer.hasClass("colorlist")) {
+        $(".stylelist").html('<span class="badge badge-info">'+_stylelist[head]+'</span>');
+    }
+    $(obj).parent().siblings().removeClass("active");
+    $(obj).parent().addClass("active");
+}
+</script>
+{:hook('footer_end')}
+</body>
+</html>

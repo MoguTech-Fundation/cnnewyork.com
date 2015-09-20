@@ -1,0 +1,3 @@
+`id`, `sku`, `name`, `summary`, `description`, `visibility`, `price`, `limit`, `status`
+4, '', 'dafasdf', 'asdfasdf', 'asdfasdf', 1, '124.00', 999, 1
+5, 'dasdfasdf', '²úÆ·2', 'adfasdf', 'asdfasdf', 0, '12.00', 12, 1

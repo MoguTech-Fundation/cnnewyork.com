@@ -8,7 +8,7 @@
 // +----------------------------------------------------------------------
 namespace Portal\Controller;
 use Common\Controller\HomeBaseController; 
-class ProductController extends HomeBaseController {
+class CheckoutController extends HomeBaseController {
 	protected $model_product;
 	
 	function _initialize() {
@@ -17,12 +17,12 @@ class ProductController extends HomeBaseController {
 	}
 	
 	public function index() {
+		$id = intval($_GET['id']);
 		$products = $this->model_product->select();
 		$this->assign('rows', $products);
     	$this->display();
     }
-	
-	public function detail() {
+	public function step0() {
 		$id = intval($_GET['id']);
 		$product = $this->model_product->where(array('id'=>$id))->find();
 		$this->assign("info", $product);

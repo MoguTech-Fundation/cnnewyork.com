@@ -16,6 +16,24 @@
 						</div>
 					</div>
                     <div class="control-group">
+						<label class="control-label">尺码:</label>
+						<div class="controls">
+							<textarea name="size" rows="5" placeholder="每行一个"></textarea>
+						</div>
+                    </div>
+                    <div class="control-group">
+						<label class="control-label">颜色:</label>
+						<div class="controls">
+							<textarea name="color" rows="5" placeholder="每行一个，与款型匹配，比如 黑红白，对应款型 749340-803"></textarea>
+						</div>
+                    </div>
+                    <div class="control-group">
+						<label class="control-label">款型:</label>
+						<div class="controls">
+							<textarea name="style" rows="5" placeholder="每行一个，比如 749340-803"></textarea>
+						</div>
+                    </div>
+                    <div class="control-group">
 						<label class="control-label">产品货号:</label>
 						<div class="controls">
 							<input type="text" class="input" name="sku" value="{$sku}" placeholder="hm-1234">
@@ -55,6 +73,26 @@
 						</div>
 					</div>
 				</fieldset>
+                <!-- 暂时无法实现的自定义选项功能 
+                <fieldset>
+                    <legend>自定义选项:</legend>
+                    <div class="customizedOption well well-small">
+                        <div class="control-group">
+                            <label class="control-label">选项名称:</label>
+                            <div class="controls">
+                                <input type="text" class="input" name="paramname[]" value="" placeholder="比如: 尺码、颜色、型号等">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">选项值:</label>
+                            <div class="controls">
+                                <textarea name="paramvalue[]" placeholder="每行一个选项"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="btn btn-primary addCustomizedOption">+</a>
+                </fieldset>
+                -->
 				<div class="form-actions">
 					<button type="submit" class="btn btn-primary btn_submit J_ajax_submit_btn">添加</button>
 					<a class="btn" href="__URL__">返回</a>
@@ -63,5 +101,24 @@
   </div>
 </div>
 <script src="__ROOT__/statics/js/common.js"></script>
+<script>
+    $(".addCustomizedOption").bind("click", function(){
+        sHTML = '<div class="customizedOption well well-small">'
+                    +'<div class="control-group">'
+                    +'<label class="control-label">选项名称:</label>'
+                    +'       <div class="controls">'
+                    +'           <input type="text" class="input" name="paramName[]" value="" placeholder="比如: 尺码、颜色、型号等">'
+                    +'       </div>'
+                    +'   </div>'
+                    +'   <div class="control-group">'
+                    +'       <label class="control-label">选项值:</label>'
+                    +'       <div class="controls">'
+                    +'           <textarea name="paramValue[]" placeholder="每行一个选项"></textarea>'
+                    +'       </div>'
+                    +'   </div>'
+                    +'</div>';
+        $(this).before(sHTML);
+    })
+</script>
 </body>
 </html>

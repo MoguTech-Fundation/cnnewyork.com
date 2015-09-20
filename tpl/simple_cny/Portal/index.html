@@ -37,11 +37,11 @@
 <body class="body-white">
 <tc_include file="Public:nav" />
 
-<php>
-$home_slides=sp_getslide("portal_index");
-
+<?php
+//$home_slides=sp_getslide("portal_index");
+$home_slides=M('Slide')->select();
 $home_slides=empty($home_slides)?$default_home_slides:$home_slides;
-</php>
+?>
 <ul id="homeslider" class="unstyled">
 	<foreach name="home_slides" item="vo">
 	<li>
