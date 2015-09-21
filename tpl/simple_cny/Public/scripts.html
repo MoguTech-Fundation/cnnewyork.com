@@ -71,5 +71,18 @@ var GV = {
 		
 		
 	});
-	</script>
+    _toolbox_flag = false;
+    $(function(){
+      $(window).scroll(function(){
+        if ($(window).scrollTop() >= 350 && !_toolbox_flag){
+           // window.console ? console.log($(window).scrollTop()) : '';
+            $("#toolbox-chat").fadeIn();
+            _toolbox_flag = true;
+        } else if ($(window).scrollTop() < 350 && _toolbox_flag) {
+            $("#toolbox-chat").fadeOut();
+            _toolbox_flag = false;
+        }
+    })
+    })
 
+	</script>

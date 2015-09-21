@@ -17,5 +17,9 @@ github: https://github.com/MoguTech-Fundation/cnnewyork.com
 - 采用 ThinkCMFX 搭建电商系统，项目代号 TCShop
 
 ## 待完成的功能
+- 详情页面图片
+- cover.jpg
+- 多品牌分类（推迟）
 - 支付码
 - 产品自定义属性选项
+- 产品评论功能

@@ -1,0 +1,66 @@
+<admintpl file="header"/>
+<body class="J_scroll_fixed">
+<div class="wrap J_check_wrap">
+  <ul class="nav nav-tabs">
+     <li ><a href="{:U('brand/index')}">列表</a></li>
+     <li ><a href="javascript:void(0)">添加</a></li>
+     <li class="active"><a href="javascript:void(0)">编辑</a></li>
+  </ul>
+  <div class="common-form">
+			<form method="post" class="form-horizontal J_ajaxForm" action="{:U('brand/add_post')}">
+				<fieldset>
+					<div class="control-group">
+						<label class="control-label">名称:</label>
+						<div class="controls">
+							<input type="text" class="input" name="name" value="{$info.name}"><span class="must_red">*</span>
+						</div>
+					</div>
+                    <div class="control-group">
+						<label class="control-label">头文字:</label>
+						<div class="controls">
+							<select name="initial">
+                                <option value="0">数字</option>
+                                <?php
+                                    foreach (range('A', 'Z') as $val) {
+                                        if ($val == $info['initial']) {
+                                            echo '<option value="'.$val.'" selected="selected">'.$val.'</option>';
+                                        } else {
+                                            echo '<option value="'.$val.'">'.$val.'</option>';
+                                        }
+                                    }
+                                ?>
+                            </select>
+						</div>
+					</div>
+                    <div class="control-group">
+						<label class="control-label">简介:</label>
+						<div class="controls">
+							<textarea name="summary" rows="3" cols="100" class="span5">{$info.summary}</textarea>
+						</div>
+					</div>
+                    <div class="control-group">
+						<label class="control-label">描述:</label>
+						<div class="controls">
+							<textarea name="description" rows="5" cols="57" class="span5">{$info.description}</textarea>
+						</div>
+					</div>
+                    <div class="control-group">
+						<label class="control-label">品牌显示:</label>
+						<div class="controls">
+							<select name="status">
+                                <option value="1" <?php if ($info['status'] == 1) {echo 'selected = "selected"'; }?>>显示</option>
+                                <option value="0" <?php if ($info['status'] == 0) {echo 'selected = "selected"'; }?>>隐藏</option>
+                            </select>
+						</div>
+					</div>
+				</fieldset>
+				<div class="form-actions">
+					<button type="submit" class="btn btn-primary btn_submit J_ajax_submit_btn">添加</button>
+					<a class="btn" href="__URL__">返回</a>
+				</div>
+			</form>
+  </div>
+</div>
+<script src="__ROOT__/statics/js/common.js"></script>
+</body>
+</html>
