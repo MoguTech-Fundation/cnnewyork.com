@@ -1,0 +1,50 @@
+<admintpl file="header"/>
+<body class="J_scroll_fixed">
+<div class="wrap J_check_wrap">
+  <ul class="nav nav-tabs">
+     <li><a href="{:U('ProductPattern/index')}">列表</a></li>
+     <li><a href="{:U('ProductPattern/add')}">添加</a></li>
+     <li class="active"><a href="javascript:void(0)">编辑</a></li>
+  </ul>
+  <div class="common-form">
+			<form method="post" class="form-horizontal" action="{:U('ProductPattern/update')}">
+                <input type="hidden" class="input" name="id" value="<?php echo $info['id'] ?>">
+				<fieldset>
+					<div class="control-group">
+						<label class="control-label" for="name">名称:</label>
+						<div class="controls">
+							<input id="name" type="text" class="input" name="name" placeholder="比如鞋子" value="<?php echo $info['name'] ?>"><span class="must_red">*</span>
+						</div>
+					</div>
+                    <div class="control-group">
+						<label class="control-label" for="paramnames">属性:</label>
+						<div class="controls">
+							<textarea id="paramnames" name="paramnames" rows="5" placeholder="每行一个，比如季节、质地、规格"><?php echo $info['paramnames'] ?></textarea>
+						</div>
+                    </div>
+                    <div class="control-group">
+						<label class="control-label" for="defaultvalues">默认值:</label>
+						<div class="controls">
+							<textarea id="defaultvalues" name="defaultvalues" rows="5" placeholder="每行一个，与属性值一一对应，比如秋、猪扒革、头层皮"><?php echo $info['defaultvalues'] ?></textarea>
+						</div>
+                    </div>
+                    <div class="control-group">
+						<label class="control-label" for="status">状态:</label>
+						<div class="controls">
+							<select id="status" name="status">
+                                <option value="1">启用</option>
+                                <option value="0">禁用</option>
+                            </select>
+						</div>
+					</div>
+				</fieldset>
+				<div class="form-actions">
+					<button type="submit" class="btn btn-primary btn_submit">更新</button>
+					<a class="btn" href="__URL__">返回</a>
+				</div>
+			</form>
+  </div>
+</div>
+<script src="__ROOT__/statics/js/common.js"></script>
+</body>
+</html>
