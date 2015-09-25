@@ -6,59 +6,59 @@
 namespace Admin\Controller;
 use Common\Controller\AdminbaseController;
 class ShippingController extends AdminbaseController {
-	protected $product_model;
+	protected $shipping_model;
 	
 	function _initialize() {
 		parent::_initialize();
 		//$this->initMenu();
-		$this->product_model = D("Product");
+		$this->shipping_model = D("shipping");
 	}
 
     public function index() {
-        $rows = $this->product_model->select();
+        $rows = $this->shipping_model->select();
 		$this->assign('rows',$rows);
 		$this->display();
     }
-	public function edit_product() {
+	public function edit_shipping() {
 		
 	}
 	public function add_post() {
 		if(IS_POST){
-			if ($this->product_model->create()){
-				if ($this->product_model->add()!==false) {
-					$this->success("添加成功！", U("product/index"), 1);
+			if ($this->shipping_model->create()){
+				if ($this->shipping_model->add()!==false) {
+					$this->success("添加成功！", U("shipping/index"), 1);
 				} else {
 					$this->error("添加失败！");
 				}
 			} else {
-				$this->error($this->product_model->getError());
+				$this->error($this->shipping_model->getError());
 			}
 		}
 	}
 	public function delete() {
 		$id = I("get.id",0,"intval");
-		if ($this->product_model->delete($id)!==false) {
+		if ($this->shipping_model->delete($id)!==false) {
 			$this->success("删除成功！");
 		} else {
 			$this->error("删除失败！");
 		}
 	}
 	public function update() {
-		if (isset($_GET['id'])) {
-			$id = intval($_GET['id']);
-			switch ($_GET['field']) {
+		if (isset($_REQUEST['id'])) {
+			$id = intval($_REQUEST['id']);
+			switch ($_REQUEST['field']) {
 				case 'visibility':
-					if ($_GET['value']) {
+					if ($_REQUEST['value']) {
 						$data['visibility'] = 1;
 					} else {
 						$data['visibility'] = 0;
 					}
 					break;
 				default: 
-					// do nothing...
+					$data = $_POST;
 			}
-			if ($this->product_model->where("id =$id")->save($data)!==false) {
-				$this->redirect(U("product/index"), 0);
+			if ($this->shipping_model->where("id =$id")->save($data)!==false) {
+				$this->redirect(U("shipping/index"), 0);
 			} else {
 				$this->error("更新失败！");
 			}
@@ -68,6 +68,9 @@ class ShippingController extends AdminbaseController {
 		$this->display();
 	}
 	public function edit() {
+		$id = intval($_REQUEST['id']);
+		$info = $this->shipping_model->where(array('id'=>$id))->find();
+		$this->assign('info',$info);
 		$this->display();
 	}
 	

@@ -44,18 +44,18 @@ class ProductController extends AdminbaseController {
 		}
 	}
 	public function update() {
-		if (isset($_GET['id'])) {
-			$id = intval($_GET['id']);
-			switch ($_GET['field']) {
+		if (isset($_REQUEST['id'])) {
+			$id = intval($_REQUEST['id']);
+			switch ($_REQUEST['field']) {
 				case 'visibility':
-					if ($_GET['value']) {
+					if ($_REQUEST['value']) {
 						$data['visibility'] = 1;
 					} else {
 						$data['visibility'] = 0;
 					}
 					break;
 				default: 
-					// do nothing...
+					$data = $_POST;
 			}
 			if ($this->product_model->where("id =$id")->save($data)!==false) {
 				$this->redirect(U("product/index"), 0);
@@ -68,6 +68,10 @@ class ProductController extends AdminbaseController {
 		$this->display();
 	}
 	public function edit() {
+		$id = intval($_REQUEST['id']);
+		$info = $this->product_model->where("id =$id")->find();
+		//var_dump($info);
+		$this->info = $info;
 		$this->display();
 	}
 	

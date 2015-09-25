@@ -24,21 +24,25 @@
 		  	echo sp_get_menu("main",$effected_id,$filetpl,$foldertpl,$ul_class,$li_class,$style,$showlevel,$dropdown);
 		?>
 		
-		<ul class="nav pull-right" id="main-menu-user" style="width: 140px;">
-			<li class="dropdown user login" style="float:left; padding-left: 3px;">
+		<ul class="nav pull-right" id="main-menu-user" style="width: 200px;">
+            <li class="dropdown" style="display:inline-block; float:right">
+              <a class="dropdown-toggle user" href="tel:13902002105"><i class="fa fa-phone shortcut-icon"></i></a>
+            </li>
+			<li class="dropdown user login" style="float:right; padding-left: 3px;">
 	            <a class="dropdown-toggle user" data-toggle="dropdown" href="#">
-	            <img src="__TMPL__/Public/images/headicon.png" class="headicon"/>
-	            <span class="user-nicename"></span><b class="caret"></b></a>
+                    <i class="fa fa-user shortcut-icon"></i>
+                    <span class="user-nicename"></span><b class="caret"></b>
+                </a>
 	            <ul class="dropdown-menu pull-right" >
 	               <li><a href="{:u('user/center/index')}"><i class="fa fa-user"></i> &nbsp;个人中心</a></li>
 	               <li class="divider"></li>
 	               <li><a href="{:u('user/index/logout')}"><i class="fa fa-sign-out"></i> &nbsp;退出</a></li>
 	            </ul>
           	</li>
-          	<li class="dropdown user offline" style="float:left; padding-left: 3px;">
+          	<li class="dropdown user offline" style="float:right; width:120px; padding-left: 3px;">
 	            <a class="dropdown-toggle user" data-toggle="dropdown" href="#">
-	           		<!--img src="__TMPL__/Public/images/headicon.png" class="headicon"/-->
                     <i class="fa fa-user shortcut-icon"></i>
+                    <span class="user-nicename">游客</span><b class="caret"></b>
 	            </a>
 	            <ul class="dropdown-menu pull-right" style="width: 90px;">
                    <li><a href="{:u('user/login/index')}"><i class="fa fa-sign-in"></i> &nbsp;登录</a></li>
@@ -48,9 +52,7 @@
 	               <li><a href="{:U('api/oauth/login',array('type'=>'qq'))}"><i class="fa fa-qq"></i> &nbsp;ＱＱ登录</a></li>
 	            </ul>
           	</li>
-            <li class="dropdown user pull-right" style="display:inline-block; float:left">
-              <a class="dropdown-toggle user" href="tel:13902002105"><i class="fa fa-phone shortcut-icon"></i></a>
-            </li>
+            
 		</ul>
 		<div class="pull-right">
         	<form method="post" class="form-inline" action="{:U('portal/search/index')}" style="margin:18px 0;">

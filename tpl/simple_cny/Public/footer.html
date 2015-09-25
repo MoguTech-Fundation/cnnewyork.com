@@ -6,14 +6,14 @@
 {:hook('footer')}
 <div id="footer">
     <div class="container">
-    <!-- 友情链接
+    <!-- 友情链接 -->
     <div class="links">
     <php>$links=sp_getlinks();</php>
     <foreach name="links" item="vo">
       <a href="{$vo.link_url}" target="{$vo.link_target}">{$vo.link_name}</a>&nbsp;
     </foreach>
     </div>
-    -- /友情链接 -->
+    <!-- /友情链接 -->
     <p>
     
     <div title="QQ"><i class="fa fa-qq" style="font-size: 14px; width: 24px;text-align:center;"></i>307248524<div>

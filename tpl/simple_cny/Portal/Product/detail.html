@@ -94,8 +94,8 @@
             <notempty name="info.description">
             <h2 style="margin-bottom:0px;">产品详情描述</h2>
             <p>Product Detail</p>
-            <div style="text-align:left">
-                {$info.description}
+            <div style="text-align:left" id="description">
+                <?php echo html_entity_decode($info['description'])?>
             </div>
             </notempty>
             <?php 
@@ -155,6 +155,10 @@ $(function() {
     }
     $(".colorlist").html(sHTML);
     
+    // 又拍图片处理
+    $("#description img").each(function(){
+       this.crossOrigin = "anonymous";
+    })
 
 });
 function navSelect(obj) {
